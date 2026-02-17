@@ -1,3 +1,4 @@
+//TITLE//
 #include "framework.h"
 
 // csúcspont árnyaló

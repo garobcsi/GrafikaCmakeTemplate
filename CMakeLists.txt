@@ -38,6 +38,7 @@ file(MAKE_DIRECTORY ${GEN_DIR})
 set(SKELETON_TEMPLATE ${CMAKE_SOURCE_DIR}/glProgram/sources/GreenTriangle/Skeleton.cpp)
 set(VERT_GLSL         ${CMAKE_SOURCE_DIR}/glProgram/sources/GreenTriangle/vert.glsl)
 set(FRAG_GLSL         ${CMAKE_SOURCE_DIR}/glProgram/sources/GreenTriangle/frag.glsl)
+set(TITLE_TXT         ${CMAKE_SOURCE_DIR}/title.txt)
 set(GENERATED_SKELETON ${GEN_DIR}/Skeleton.cpp)
 
 add_custom_command(
@@ -46,9 +47,10 @@ add_custom_command(
         -DTEMPLATE_FILE=${SKELETON_TEMPLATE}
         -DVERT_GLSL=${VERT_GLSL}
         -DFRAG_GLSL=${FRAG_GLSL}
+        -DTITLE_TXT=${TITLE_TXT}
         -DOUTPUT_FILE=${GENERATED_SKELETON}
         -P ${GENERATE_SCRIPT}
-    DEPENDS ${SKELETON_TEMPLATE} ${VERT_GLSL} ${FRAG_GLSL} ${GENERATE_SCRIPT}
+    DEPENDS ${SKELETON_TEMPLATE} ${VERT_GLSL} ${FRAG_GLSL} ${TITLE_TXT} ${GENERATE_SCRIPT}
     COMMENT "Generating submittable Skeleton.cpp (shaders inlined)"
 )
 
