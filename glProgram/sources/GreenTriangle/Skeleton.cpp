@@ -1,29 +1,29 @@
 #include "framework.h"
 
-// cs�cspont �rnyal�
-const char * vertSource = R"(
-	#version 330				
-    precision highp float;
+#define GLSL(_version, _body) "#version " #_version "\n" #_body
+
+// csúcspont árnyaló
+const char * vertSource = GLSL(330,
+	precision highp float;
 
 	layout(location = 0) in vec2 cP;	// 0. bemeneti regiszter
 
 	void main() {
-		gl_Position = vec4(cP.x, cP.y, 0, 1); 	// bemenet m�r normaliz�lt eszk�zkoordin�t�kban
+		gl_Position = vec4(cP.x, cP.y, 0, 1); 	// bemenet már normalizált eszközkoordinátákban
 	}
-)";
+);
 
-// pixel �rnyal�
-const char * fragSource = R"(
-	#version 330
-    precision highp float;
+// pixel árnyaló
+const char * fragSource = GLSL(330,
+	precision highp float;
 
-	uniform vec3 color;			// konstans sz�n
-	out vec4 fragmentColor;		// pixel sz�n
+	uniform vec3 color;			// konstans szín
+	out vec4 fragmentColor;		// pixel szín
 
 	void main() {
 		fragmentColor = vec4(color, 1); // RGB -> RGBA
 	}
-)";
+);
 
 const int winWidth = 600, winHeight = 600;
 
