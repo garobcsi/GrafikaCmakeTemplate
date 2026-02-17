@@ -12,27 +12,27 @@ find_package(OpenGL REQUIRED)
 
 # --- GLAD (bundled) ---
 add_library(glad STATIC
-    ${CMAKE_SOURCE_DIR}/../Libraries/Glad/src/glad.c
+    ${CMAKE_SOURCE_DIR}/Libraries/Glad/src/glad.c
 )
 target_include_directories(glad PUBLIC
-    ${CMAKE_SOURCE_DIR}/../Libraries/Glad/include
+    ${CMAKE_SOURCE_DIR}/Libraries/Glad/include
 )
 
 # --- GLM (header-only, bundled) ---
-set(GLM_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../Libraries/glm/include)
+set(GLM_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/Libraries/glm/include)
 
 # --- Source files (framework + lodepng, always compiled) ---
 set(FRAMEWORK_SOURCES
-    sources/framework.cpp
-    sources/framework.h
-    sources/glad.c
-    sources/lodepng.cpp
-    sources/lodepng.h
+    glProgram/sources/framework.cpp
+    glProgram/sources/framework.h
+    glProgram/sources/glad.c
+    glProgram/sources/lodepng.cpp
+    glProgram/sources/lodepng.h
 )
 
 # --- Skeleton.cpp is always the main application entry ---
 set(APP_SOURCES
-    sources/GreenTriangle/Skeleton.cpp
+    glProgram/sources/GreenTriangle/Skeleton.cpp
 )
 
 add_executable(${PROJECT_NAME}
@@ -41,9 +41,9 @@ add_executable(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}/sources
-    ${CMAKE_SOURCE_DIR}/../Libraries/Glad/include
-    ${CMAKE_SOURCE_DIR}/../Libraries/glfw-3.4.bin.WIN64/include
+    ${CMAKE_SOURCE_DIR}/glProgram/sources
+    ${CMAKE_SOURCE_DIR}/Libraries/Glad/include
+    ${CMAKE_SOURCE_DIR}/Libraries/glfw-3.4.bin.WIN64/include
     ${GLM_INCLUDE_DIR}
 )
 
