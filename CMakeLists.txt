@@ -30,9 +30,31 @@ set(FRAMEWORK_SOURCES
     glProgram/sources/lodepng.h
 )
 
-# --- Skeleton.cpp is always the main application entry ---
+# --- Shader embedding: generate a submittable Skeleton.cpp from template + .glsl files ---
+set(GENERATE_SCRIPT ${CMAKE_SOURCE_DIR}/cmake/generate_skeleton.cmake)
+set(GEN_DIR ${CMAKE_BINARY_DIR}/generated)
+file(MAKE_DIRECTORY ${GEN_DIR})
+
+set(SKELETON_TEMPLATE ${CMAKE_SOURCE_DIR}/glProgram/sources/GreenTriangle/Skeleton.cpp)
+set(VERT_GLSL         ${CMAKE_SOURCE_DIR}/glProgram/sources/GreenTriangle/vert.glsl)
+set(FRAG_GLSL         ${CMAKE_SOURCE_DIR}/glProgram/sources/GreenTriangle/frag.glsl)
+set(GENERATED_SKELETON ${GEN_DIR}/Skeleton.cpp)
+
+add_custom_command(
+    OUTPUT  ${GENERATED_SKELETON}
+    COMMAND ${CMAKE_COMMAND}
+        -DTEMPLATE_FILE=${SKELETON_TEMPLATE}
+        -DVERT_GLSL=${VERT_GLSL}
+        -DFRAG_GLSL=${FRAG_GLSL}
+        -DOUTPUT_FILE=${GENERATED_SKELETON}
+        -P ${GENERATE_SCRIPT}
+    DEPENDS ${SKELETON_TEMPLATE} ${VERT_GLSL} ${FRAG_GLSL} ${GENERATE_SCRIPT}
+    COMMENT "Generating submittable Skeleton.cpp (shaders inlined)"
+)
+
+# --- The generated Skeleton.cpp is the main application entry ---
 set(APP_SOURCES
-    glProgram/sources/GreenTriangle/Skeleton.cpp
+    ${GENERATED_SKELETON}
 )
 
 add_executable(${PROJECT_NAME}
