@@ -4,8 +4,29 @@ project(GrafikaLabor LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- GLFW (system package) ---
-find_package(glfw3 3.3 REQUIRED)
+# --- GLFW ---
+if(WIN32)
+    set(GLFW_ROOT ${CMAKE_SOURCE_DIR}/Libraries/glfw-3.4.bin.WIN64)
+    if(MSVC)
+        if(MSVC_VERSION GREATER_EQUAL 1930)
+            set(_GLFW_LIB_DIR ${GLFW_ROOT}/lib-vc2022)
+        elseif(MSVC_VERSION GREATER_EQUAL 1920)
+            set(_GLFW_LIB_DIR ${GLFW_ROOT}/lib-vc2019)
+        else()
+            set(_GLFW_LIB_DIR ${GLFW_ROOT}/lib-vc2017)
+        endif()
+        set(_GLFW_LIB ${_GLFW_LIB_DIR}/glfw3.lib)
+    else()
+        set(_GLFW_LIB ${GLFW_ROOT}/lib-mingw-w64/libglfw3.a)
+    endif()
+    add_library(glfw STATIC IMPORTED GLOBAL)
+    set_target_properties(glfw PROPERTIES
+        IMPORTED_LOCATION ${_GLFW_LIB}
+        INTERFACE_INCLUDE_DIRECTORIES ${GLFW_ROOT}/include
+    )
+else()
+    find_package(glfw3 3.3 REQUIRED)
+endif()
 
 # --- OpenGL ---
 find_package(OpenGL REQUIRED)
@@ -67,7 +88,6 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/glProgram/sources
     ${CMAKE_SOURCE_DIR}/Libraries/Glad/include
-    ${CMAKE_SOURCE_DIR}/Libraries/glfw-3.4.bin.WIN64/include
     ${GLM_INCLUDE_DIR}
 )
 
